@@ -4,9 +4,11 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class LimitsConfigController {
+class LimitsConfigController(
+        val config: Config
+) {
 
     @GetMapping("/limits")
-    fun retrieveLimitsFromConfiguration() = LimitConfig(1000, 1)
+    fun retrieveLimitsFromConfiguration() = LimitConfig(config.maximum, config.minimum)
 
 }
