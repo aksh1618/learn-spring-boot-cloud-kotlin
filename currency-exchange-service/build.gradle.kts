@@ -20,6 +20,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven("https://repo.spring.io/milestone")
 }
 
 extra["springCloudVersion"] = "Hoxton.SR1"
@@ -35,6 +36,9 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
+
+    // Kofu (https://github.com/spring-projects-experimental/spring-fu)
+    implementation("org.springframework.fu:spring-fu-kofu:0.2.2")
 }
 
 dependencyManagement {

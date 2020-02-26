@@ -1,11 +1,16 @@
 package com.aksh.currencyexchangeservice
 
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
+import org.springframework.boot.WebApplicationType
+import org.springframework.core.env.get
+import org.springframework.fu.kofu.application
+import org.springframework.fu.kofu.webmvc.webMvc
 
-@SpringBootApplication
-class CurrencyExchangeServiceApplication
+val app = application(WebApplicationType.SERVLET) {
+    webMvc {
+        port = Integer.parseInt(env["server.port"])
+    }
+}
 
-fun main(args: Array<String>) {
-    runApplication<CurrencyExchangeServiceApplication>(*args)
+fun main() {
+    app.run()
 }
