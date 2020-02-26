@@ -13,7 +13,9 @@ val app = application(WebApplicationType.SERVLET) {
         router {
             val exchangeService = ref<ExchangeService>()
             GET("/from/{from}/to/{to}") { request ->
-                ok().body(
+                ok().headers {
+                    it["Port"] = port.toString()
+                }.body(
                         exchangeService.getExchangeRate(
                                 request.pathVariable("from"), request.pathVariable("to")
                         )

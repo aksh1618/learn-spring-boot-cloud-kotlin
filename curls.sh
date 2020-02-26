@@ -6,3 +6,4 @@ curl -s localhost:8888/limits-service/qa | fx .
 curl -s localhost:8080/limits | fx .
 curl -s localhost:8080/limits | fx .
 curl -s localhost:8000/from/a/to/b | fx .
+curl -is localhost:8001/from/a/to/b | fx .
