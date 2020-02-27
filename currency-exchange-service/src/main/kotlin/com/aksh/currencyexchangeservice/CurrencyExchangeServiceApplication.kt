@@ -6,6 +6,9 @@ import org.springframework.context.support.beans
 import org.springframework.core.env.get
 import org.springframework.web.servlet.function.router
 import java.math.BigDecimal
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Id
 
 @SpringBootApplication
 class CurrencyExchangeServiceApplication
@@ -36,4 +39,10 @@ class ExchangeService {
     fun getExchangeRate(from: String, to: String) = ExchangeValue(from, to, BigDecimal.ONE)
 }
 
-data class ExchangeValue(val from: String, val to: String, val conversionMultiple: BigDecimal, val id: Long = 0L)
+@Entity
+data class ExchangeValue(
+        @Column(name="currency_from") val from: String,
+        @Column(name="currency_to") val to: String,
+        val conversionMultiple: BigDecimal,
+        @Id val id: Long = 0L
+)
