@@ -2,6 +2,7 @@ package com.aksh.currencyconversionservice
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.cloud.netflix.ribbon.RibbonClient
 import org.springframework.cloud.openfeign.EnableFeignClients
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.context.support.beans
@@ -56,7 +57,8 @@ private fun getRouter(
     }
 }
 
-@FeignClient(name = "currency-exchange-service", url = "localhost:8000")
+@FeignClient(name = "currency-exchange-service")
+@RibbonClient(name = "currency-exchange-service")
 interface CurrencyExchangeServiceProxy {
     @GetMapping("/from/{from}/to/{to}")
     fun retrieveExchangeValue(

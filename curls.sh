@@ -12,3 +12,4 @@ curl -s localhost:8100/from/USD/to/INR/quantity/1 | fx .
 curl -s localhost:8100/from/USD/to/INR/quantity/35 | fx .
 curl -is localhost:8100/from/USD/to/INR/quantity/35
 curl -is localhost:8100/from/USD/to/INR/quantity/35
+curl -is localhost:8100/from/USD/to/INR/quantity/35

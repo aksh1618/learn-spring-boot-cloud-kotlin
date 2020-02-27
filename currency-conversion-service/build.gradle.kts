@@ -38,6 +38,9 @@ dependencies {
 
     // Feign
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+
+    // Ribbon
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-ribbon")
 }
 
 dependencyManagement {
