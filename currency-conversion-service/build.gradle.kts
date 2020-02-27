@@ -35,6 +35,9 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
+
+    // Feign
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 }
 
 dependencyManagement {

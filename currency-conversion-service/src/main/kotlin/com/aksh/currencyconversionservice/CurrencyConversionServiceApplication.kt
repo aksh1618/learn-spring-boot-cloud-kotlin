@@ -2,17 +2,20 @@ package com.aksh.currencyconversionservice
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.cloud.openfeign.EnableFeignClients
+import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.context.support.beans
 import org.springframework.core.env.get
 import org.springframework.http.HttpStatus
-import org.springframework.web.client.RestTemplate
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.server.ResponseStatusException
-import org.springframework.web.servlet.function.RouterFunction
-import org.springframework.web.servlet.function.ServerResponse
 import org.springframework.web.servlet.function.router
 import java.math.BigDecimal
 
 @SpringBootApplication
+@EnableFeignClients("com.aksh.currencyconversionservice")
 class CurrencyConversionServiceApplication
 
 fun main(args: Array<String>) {
@@ -21,18 +24,23 @@ fun main(args: Array<String>) {
             bean<ConversionService>()
             bean {
                 val port = env["server.port"]
-                getRouter(ref(), port ?: "8080")
+                getRouter(ref(), ref(), port ?: "8080")
             }
         }
         addInitializers(beansInitializer)
     }
 }
 
-private fun getRouter(conversionService: ConversionService, myPort: String): RouterFunction<ServerResponse> = router {
+private fun getRouter(
+        currencyExchangeServiceProxy: CurrencyExchangeServiceProxy,
+        conversionService: ConversionService,
+        myPort: String
+) = router {
     GET("from/{from}/to/{to}/quantity/{quantity}") { request ->
         val (multiple, port) = conversionService.getConversionMultipleAndPort(
                 request.pathVariable("from"),
-                request.pathVariable("to")
+                request.pathVariable("to"),
+                currencyExchangeServiceProxy
         )
         ok().headers { headers ->
             headers["Port"] = port ?: myPort
@@ -48,13 +56,20 @@ private fun getRouter(conversionService: ConversionService, myPort: String): Rou
     }
 }
 
+@FeignClient(name = "currency-exchange-service", url = "localhost:8000")
+interface CurrencyExchangeServiceProxy {
+    @GetMapping("/from/{from}/to/{to}")
+    fun retrieveExchangeValue(
+            @PathVariable from: String, @PathVariable to: String
+    ): ResponseEntity<CurrencyConversionBean>
+}
+
 class ConversionService {
-    fun getConversionMultipleAndPort(fromCurrency: String, toCurrency: String) = RestTemplate()
-            .getForEntity(
-                    "http://localhost:8000/from/{from}/to/{to}",
-                    CurrencyConversionBean::class.java,
-                    mapOf("from" to fromCurrency, "to" to toCurrency)
-            ).let {
+    fun getConversionMultipleAndPort(
+            fromCurrency: String, toCurrency: String, currencyExchangeServiceProxy: CurrencyExchangeServiceProxy
+    ) = currencyExchangeServiceProxy
+            .retrieveExchangeValue(fromCurrency, toCurrency)
+            .let {
                 Pair(
                         it.body?.conversionMultiple ?: throw ResponseStatusException(
                                 HttpStatus.INTERNAL_SERVER_ERROR, "Couldn't connect to exchange service"
