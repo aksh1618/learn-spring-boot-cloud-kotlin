@@ -41,6 +41,9 @@ dependencies {
 
     // Ribbon
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-ribbon")
+
+    // Eureka
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 }
 
 dependencyManagement {

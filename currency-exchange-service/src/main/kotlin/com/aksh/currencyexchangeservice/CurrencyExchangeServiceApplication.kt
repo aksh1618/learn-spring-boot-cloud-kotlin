@@ -2,6 +2,7 @@ package com.aksh.currencyexchangeservice
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient
 import org.springframework.context.support.beans
 import org.springframework.core.env.get
 import org.springframework.data.jpa.repository.JpaRepository
@@ -12,6 +13,7 @@ import javax.persistence.Entity
 import javax.persistence.Id
 
 @SpringBootApplication
+@EnableDiscoveryClient
 class CurrencyExchangeServiceApplication
 
 fun main(args: Array<String>) {
