@@ -59,10 +59,10 @@ private fun getRouter(
     }
 }
 
-@FeignClient(name = "currency-exchange-service")
+@FeignClient(name = "netflix-zuul-api-gateway-server")
 @RibbonClient(name = "currency-exchange-service")
 interface CurrencyExchangeServiceProxy {
-    @GetMapping("/from/{from}/to/{to}")
+    @GetMapping("currency-exchange-service/from/{from}/to/{to}")
     fun retrieveExchangeValue(
             @PathVariable from: String, @PathVariable to: String
     ): ResponseEntity<CurrencyConversionBean>

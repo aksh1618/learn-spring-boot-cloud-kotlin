@@ -14,3 +14,4 @@ curl -is localhost:8100/from/USD/to/INR/quantity/35
 curl -is localhost:8100/from/USD/to/INR/quantity/35
 curl -is localhost:8100/from/USD/to/INR/quantity/35
 curl -is localhost:8765/currency-conversion-service/from/USD/to/INR/quantity/35
+curl -is localhost:8765/currency-conversion-service/from/USD/to/INR/quantity/35
