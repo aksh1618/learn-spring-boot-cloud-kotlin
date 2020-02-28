@@ -15,3 +15,5 @@ curl -is localhost:8100/from/USD/to/INR/quantity/35
 curl -is localhost:8100/from/USD/to/INR/quantity/35
 curl -is localhost:8765/currency-conversion-service/from/USD/to/INR/quantity/35
 curl -is localhost:8765/currency-conversion-service/from/USD/to/INR/quantity/35
+# Starting zipkin server with already running rabbitmq
+docker run -d -p 9411:9411 -e RABBIT_ADDRESS=localhost openzipkin/zipkin
