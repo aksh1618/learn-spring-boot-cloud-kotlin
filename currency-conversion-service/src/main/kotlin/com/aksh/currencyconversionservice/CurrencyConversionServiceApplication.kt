@@ -1,5 +1,7 @@
 package com.aksh.currencyconversionservice
 
+import brave.sampler.Sampler
+import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient
@@ -29,6 +31,7 @@ fun main(args: Array<String>) {
                 val port = env["server.port"]
                 getRouter(ref(), ref(), port ?: "8080")
             }
+            bean<Sampler> { Sampler.ALWAYS_SAMPLE }
         }
         addInitializers(beansInitializer)
     }
@@ -39,12 +42,14 @@ private fun getRouter(
         conversionService: ConversionService,
         myPort: String
 ) = router {
+    val logger = LoggerFactory.getLogger("Router")
     GET("from/{from}/to/{to}/quantity/{quantity}") { request ->
         val (multiple, port) = conversionService.getConversionMultipleAndPort(
                 request.pathVariable("from"),
                 request.pathVariable("to"),
                 currencyExchangeServiceProxy
         )
+        logger.info("Exchange rate = {}", multiple)
         ok().headers { headers ->
             headers["Port"] = port ?: myPort
         }.body(request.run {

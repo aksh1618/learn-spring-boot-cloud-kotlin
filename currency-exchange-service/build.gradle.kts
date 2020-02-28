@@ -43,6 +43,9 @@ dependencies {
 
     // Eureka
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+
+    // Sleuth
+    implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
 }
 
 dependencyManagement {

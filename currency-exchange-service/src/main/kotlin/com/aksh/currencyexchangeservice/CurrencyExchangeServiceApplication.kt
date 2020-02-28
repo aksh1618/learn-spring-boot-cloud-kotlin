@@ -1,5 +1,7 @@
 package com.aksh.currencyexchangeservice
 
+import brave.sampler.Sampler
+import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient
@@ -22,17 +24,21 @@ fun main(args: Array<String>) {
             bean {
                 getRouter(ref(), env["server.port"] ?: "8080")
             }
+            bean<Sampler> { Sampler.ALWAYS_SAMPLE }
         }
         addInitializers(beansInitializer)
     }
 }
 
 private fun getRouter(exchangeService: ExchangeValueRepository, port: String) = router {
+    val logger = LoggerFactory.getLogger("Router")
     GET("/from/{from}/to/{to}") { request ->
         ok().headers { headers ->
             headers["Port"] = port
         }.body(request.run {
-            exchangeService.findByFromAndTo(pathVariable("from"), pathVariable("to"))
+            exchangeService.findByFromAndTo(pathVariable("from"), pathVariable("to")).also {
+                logger.info("Exchange rate = {}", it)
+            }
         })
     }
 }
