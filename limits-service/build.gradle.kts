@@ -37,6 +37,9 @@ dependencies {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
     kapt("org.springframework.boot:spring-boot-configuration-processor")
+
+    // Spring cloud bus
+    implementation("org.springframework.cloud:spring-cloud-starter-bus-amqp")
 }
 
 dependencyManagement {
