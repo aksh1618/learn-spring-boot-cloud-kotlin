@@ -20,3 +20,5 @@ docker run -d -p 9411:9411 -e RABBIT_ADDRESS=localhost openzipkin/zipkin
 curl -s localhost:8080/limits | fx .
 curl -isX POST localhost:8080/actuator/bus-refresh
 curl -s localhost:8081/limits | fx .
+curl -s localhost:8081/limits | fx .
+curl -s localhost:8081/limits | fx .

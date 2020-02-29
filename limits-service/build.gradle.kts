@@ -40,6 +40,9 @@ dependencies {
 
     // Spring cloud bus
     implementation("org.springframework.cloud:spring-cloud-starter-bus-amqp")
+
+    // Hystrix
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-hystrix")
 }
 
 dependencyManagement {
